@@ -8,12 +8,12 @@ import { newCommonApiServerMiddleware } from './common-api-server-middleware'
 
 describe('CommonApiServerMiddleware', () => {
     it('should allow request with proper origin and set json type', (done) => {
-        const checkOriginMiddleware = newCommonApiServerMiddleware(['hoot-hoot.com']);
+        const checkOriginMiddleware = newCommonApiServerMiddleware(['truesparrow.com']);
 
         const mockReq = td.object(['header']);
         const mockRes = td.object(['type']);
 
-        td.when(mockReq.header('Origin')).thenReturn('hoot-hoot.com');
+        td.when(mockReq.header('Origin')).thenReturn('truesparrow.com');
 
         checkOriginMiddleware(mockReq as any, mockRes as any, () => {
             td.verify(mockRes.type('json'));
@@ -22,12 +22,12 @@ describe('CommonApiServerMiddleware', () => {
     });
 
     it('should allow request with proper origin out of multiple ones', (done) => {
-        const checkOriginMiddleware = newCommonApiServerMiddleware(['hoot-hoot.com', 'hoot-hoot.io']);
+        const checkOriginMiddleware = newCommonApiServerMiddleware(['truesparrow.com', 'truesparrow.io']);
 
         const mockReq = td.object(['header']);
         const mockRes = td.object('Response');
 
-        td.when(mockReq.header('Origin')).thenReturn('hoot-hoot.com');
+        td.when(mockReq.header('Origin')).thenReturn('truesparrow.com');
 
         checkOriginMiddleware(mockReq as any, mockRes as any, () => {
             done();
@@ -35,7 +35,7 @@ describe('CommonApiServerMiddleware', () => {
     });
 
     it('should block a request with a disallowed origin', () => {
-        const checkOriginMiddleware = newCommonApiServerMiddleware(['hoot-hoot.com']);
+        const checkOriginMiddleware = newCommonApiServerMiddleware(['truesparrow.com']);
         let passedCheck = false;
 
         /* codecov skip start */
@@ -46,7 +46,7 @@ describe('CommonApiServerMiddleware', () => {
         /* codecov skip end */
         const mockRes = td.object(['status', 'end']);
 
-        td.when(mockReq.header('Origin')).thenReturn('hoot-hoot.io');
+        td.when(mockReq.header('Origin')).thenReturn('truesparrow.io');
 
         checkOriginMiddleware(mockReq as any, mockRes as any, () => { passedCheck = true; });
 
@@ -57,13 +57,13 @@ describe('CommonApiServerMiddleware', () => {
     });
 
     it('should copy the list of clients', () => {
-        const allowedOrigins = ['hoot-hoot.com'];
+        const allowedOrigins = ['truesparrow.com'];
         const checkOriginMiddleware = newCommonApiServerMiddleware(allowedOrigins);
 
         const mockReq = td.object(['header']);
         const mockRes = td.object('Response');
 
-        td.when(mockReq.header('Origin')).thenReturn('hoot-hoot.com');
+        td.when(mockReq.header('Origin')).thenReturn('truesparrow.com');
 
         {
             var passedCheck = false;
@@ -73,7 +73,7 @@ describe('CommonApiServerMiddleware', () => {
             expect(passedCheck).to.be.true;
         }
 
-        allowedOrigins[0] = 'hoot-hoot.io';
+        allowedOrigins[0] = 'truesparrow.io';
 
         {
             var passedCheck = false;

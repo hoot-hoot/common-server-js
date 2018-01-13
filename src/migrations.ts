@@ -1,5 +1,5 @@
 /**
- * Helpers for database migrations. `hoot-hoot` API services usually have an associated database. We
+ * Helpers for database migrations. `truesparrow` API services usually have an associated database. We
  * use [knex]{@link http://knexjs.org/} to interact with the database. This is simply a query
  * builder with some added functionality, but is not an ORM. So it doesn't have any of those
  * code first schemas. So specifying the database schema is done via migrations files in a

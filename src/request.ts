@@ -7,7 +7,7 @@ import * as Rollbar from 'rollbar'
 
 
 /**
- * The `hoot-hoot` standard request. It is an extension to the {@link express.Request}, which is itself
+ * The `truesparrow` standard request. It is an extension to the {@link express.Request}, which is itself
  * based off of the node one.
  */
 export interface Request extends express.Request {

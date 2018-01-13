@@ -1,10 +1,10 @@
-/** Defines factories for middleware which ensures the basic structure of any `hoot-hoot` server. */
+/** Defines factories for middleware which ensures the basic structure of any `truesparrow` server. */
 
 /** Imports. Also so typedoc works correctly. */
 import * as express from 'express'
 import * as Rollbar from 'rollbar'
 
-import { Env, envToString } from '@hoot-hoot/common-js'
+import { Env, envToString } from '@truesparrow/common-js'
 
 import { Request } from './request'
 
@@ -40,7 +40,7 @@ export function newLocalCommonServerMiddleware(name: string, env: Env, testDisab
             level: 'info',
             stream: process.stdout
         }],
-        "hoot-hoot": {
+        truesparrow: {
             serviceName: name,
             env: envToString(env)
         }
@@ -98,7 +98,7 @@ export function newCommonServerMiddleware(
             type: 'raw',
             stream: new Bunyan2Loggly({ token: logglyToken, subdomain: logglySubdomain }, LOGGLY_BUFFER_SIZE, LOGGLY_TIMEOUT_MS)
         }],
-        "hoot-hoot": {
+        truesparrow: {
             serviceName: name,
             env: envToString(env)
         }

@@ -1,4 +1,4 @@
-/** Defines a factory for middleware which ensures the basic structure of any `hoot-hoot` API server. */
+/** Defines a factory for middleware which ensures the basic structure of any `truesparrow` API server. */
 
 /** Imports. Also so typedoc works correctly. */
 import * as express from 'express'

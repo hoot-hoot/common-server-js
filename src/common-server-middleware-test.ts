@@ -2,14 +2,14 @@ import { expect } from 'chai'
 import 'mocha'
 import * as td from 'testdouble'
 
-import { Env } from '@hoot-hoot/common-js'
+import { Env } from '@truesparrow/common-js'
 
 import { newLocalCommonServerMiddleware, newCommonServerMiddleware } from './common-server-middleware'
 
 
 describe('LocalCommonServerMiddleware', () => {
     it('should create a completed request object', (done) => {
-        const serverMiddleware = newLocalCommonServerMiddleware('hoot-hoot', Env.Local, true);
+        const serverMiddleware = newLocalCommonServerMiddleware('truesparrow', Env.Local, true);
 
         const rightNow = new Date(Date.now());
 
@@ -35,7 +35,7 @@ describe('LocalCommonServerMiddleware', () => {
 
 describe('CommonServerMiddleware', () => {
     it('should create a completed request object', (done) => {
-        const serverMiddleware = newCommonServerMiddleware('hoot-hoot', Env.Prod, 'BAD', 'BAD', 'BAD');
+        const serverMiddleware = newCommonServerMiddleware('truesparrow', Env.Prod, 'BAD', 'BAD', 'BAD');
 
         const rightNow = new Date(Date.now());
 
