@@ -1,6 +1,6 @@
 {
     "name": "@truesparrow/common-server-js",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "description": "Things shared between packages, for server-side work.",
     "author": "CHM SQRT2 Team",
     "scripts": {
@@ -29,7 +29,7 @@
         "tsconfig.json": "f:tsconfig.json"
     },
     "dependencies": {
-        "@truesparrow/common-js": "=0.0.1",
+        "@truesparrow/common-js": "latest",
         "@types/bunyan": "=1.8.3",
         "@types/continuation-local-storage": "=3.2.1",
         "async-middleware": "=1.2.1",
@@ -45,7 +45,7 @@
         "rollbar": "=2.3.2"
     },
     "devDependencies": {
-        "@truesparrow/togemfury": "=0.0.3",
+        "@truesparrow/togemfury": "latest",
         "@types/chai": "=4.0.8",
         "@types/express": "=4.0.39",
         "@types/http-status-codes": "=1.0.29",
