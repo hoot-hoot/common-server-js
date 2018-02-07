@@ -8,47 +8,54 @@ import { newCommonApiServerMiddleware } from './common-api-server-middleware'
 
 describe('CommonApiServerMiddleware', () => {
     it('should allow request with proper origin and set json type', (done) => {
-        const checkOriginMiddleware = newCommonApiServerMiddleware(['truesparrow.com']);
+        const middleware = newCommonApiServerMiddleware(['truesparrow.com']);
 
-        const mockReq = td.object(['header']);
+        const mockReq = td.object({
+            header: (_name: string) => { },
+            headers: {}
+        });
         const mockRes = td.object(['type']);
 
         td.when(mockReq.header('Origin')).thenReturn('truesparrow.com');
 
-        checkOriginMiddleware(mockReq as any, mockRes as any, () => {
+        middleware(mockReq as any, mockRes as any, () => {
             td.verify(mockRes.type('json'));
             done();
         });
     });
 
     it('should allow request with proper origin out of multiple ones', (done) => {
-        const checkOriginMiddleware = newCommonApiServerMiddleware(['truesparrow.com', 'truesparrow.io']);
+        const middleware = newCommonApiServerMiddleware(['truesparrow.com', 'truesparrow.io']);
 
-        const mockReq = td.object(['header']);
+        const mockReq = td.object({
+            header: (_name: string) => { },
+            headers: {}
+        });
         const mockRes = td.object('Response');
 
         td.when(mockReq.header('Origin')).thenReturn('truesparrow.com');
 
-        checkOriginMiddleware(mockReq as any, mockRes as any, () => {
+        middleware(mockReq as any, mockRes as any, () => {
             done();
         });
     });
 
     it('should block a request with a disallowed origin', () => {
-        const checkOriginMiddleware = newCommonApiServerMiddleware(['truesparrow.com']);
+        const middleware = newCommonApiServerMiddleware(['truesparrow.com']);
         let passedCheck = false;
 
         /* codecov skip start */
         const mockReq = td.object({
-            header: (_name: string) => {},
-            log: {warn: (_msg: string) => {}}
+            header: (_name: string) => { },
+            headers: {},
+            log: { warn: (_msg: string) => { } }
         });
         /* codecov skip end */
         const mockRes = td.object(['status', 'end']);
 
         td.when(mockReq.header('Origin')).thenReturn('truesparrow.io');
 
-        checkOriginMiddleware(mockReq as any, mockRes as any, () => { passedCheck = true; });
+        middleware(mockReq as any, mockRes as any, () => { passedCheck = true; });
 
         expect(passedCheck).to.be.false;
         td.verify(mockReq.log.warn('Origin is not allowed'));
@@ -58,9 +65,12 @@ describe('CommonApiServerMiddleware', () => {
 
     it('should copy the list of clients', () => {
         const allowedOrigins = ['truesparrow.com'];
-        const checkOriginMiddleware = newCommonApiServerMiddleware(allowedOrigins);
+        const middleware = newCommonApiServerMiddleware(allowedOrigins);
 
-        const mockReq = td.object(['header']);
+        const mockReq = td.object({
+            header: (_name: string) => { },
+            headers: {}
+        });
         const mockRes = td.object('Response');
 
         td.when(mockReq.header('Origin')).thenReturn('truesparrow.com');
@@ -68,7 +78,7 @@ describe('CommonApiServerMiddleware', () => {
         {
             var passedCheck = false;
 
-            checkOriginMiddleware(mockReq as any, mockRes as any, () => { passedCheck = true });
+            middleware(mockReq as any, mockRes as any, () => { passedCheck = true });
 
             expect(passedCheck).to.be.true;
         }
@@ -78,7 +88,7 @@ describe('CommonApiServerMiddleware', () => {
         {
             var passedCheck = false;
 
-            checkOriginMiddleware(mockReq as any, mockRes as any, () => { passedCheck = true });
+            middleware(mockReq as any, mockRes as any, () => { passedCheck = true });
 
             expect(passedCheck).to.be.true;
         }

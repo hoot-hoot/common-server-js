@@ -1,6 +1,7 @@
 /** Defines a factory for middleware which ensures the basic structure of any `truesparrow` API server. */
 
 /** Imports. Also so typedoc works correctly. */
+import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import * as HttpStatus from 'http-status-codes'
 
@@ -10,7 +11,10 @@ import { Request } from './request'
 /**
  * Create an express middleware component which takes care of common structure for API servers.
  * It ensures that there is an Origin header and that it one of a set of allowed origins. It also
- * sets the response content type to JSON, as all our API servers write JSON.
+ * sets the response content type to JSON, as all our API servers write JSON. It also parses the
+ * request body as a JSON object so it is available to components upstream of this one via the
+ * body property.
+ * @note A limit of 100kb is placed on inputs.
  * @remark The check is textual, so anyone can fake such a request if they're in the proper
  * position, but it is a start to identity based checks.
  * @param clients - an array of hostnames, indicating the allowed services, both client and server
@@ -19,20 +23,23 @@ import { Request } from './request'
  */
 export function newCommonApiServerMiddleware(clients: string[]): express.RequestHandler {
     const localClients = clients.slice(0);
+    const bodyParserMiddleware = bodyParser.json({ limit: '100kb' });
 
     return (req: Request, res: express.Response, next: express.NextFunction) => {
-        const origin = req.header('Origin') as string;
+        bodyParserMiddleware(req, res, () => {
+            const origin = req.header('Origin') as string;
 
-        if (localClients.indexOf(origin) == -1) {
-            req.log.warn('Origin is not allowed');
-            res.status(HttpStatus.BAD_REQUEST);
-            res.end();
-            return;
-        }
+            if (localClients.indexOf(origin) == -1) {
+                req.log.warn('Origin is not allowed');
+                res.status(HttpStatus.BAD_REQUEST);
+                res.end();
+                return;
+            }
 
-        res.type('json');
+            res.type('json');
 
-        // Fire away.
-        next();
+            // Fire away.
+            next();
+        });
     };
 }
