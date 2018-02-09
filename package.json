@@ -1,6 +1,6 @@
 {
     "name": "@truesparrow/common-server-js",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Things shared between packages, for server-side work.",
     "author": "CHM SQRT2 Team",
     "scripts": {
@@ -41,7 +41,6 @@
         "express": "=4.16.2",
         "express-bunyan-logger": "=1.3.2",
         "http-status-codes": "=1.3.0",
-        "isomorphic-fetch": "=2.2.1",
         "raynor": "=0.14.0",
         "rollbar": "=2.3.2"
     },
