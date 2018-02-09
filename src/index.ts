@@ -20,12 +20,5 @@ export {
 } from './request'
 
 export {
-    ApiGatewayWebFetcher,
-    InternalWebFetcher,
-    WebFetcher
-} from './web-fetcher'
-
-
-export {
     newNamespaceMiddleware
 } from './namespace-middleware'
