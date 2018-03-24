@@ -12,6 +12,10 @@ export {
 } from './env-config'
 
 export {
+    newHealthCheckRouter
+} from './healthcheck-router'
+
+export {
     startupMigration
 } from './migrations'
 
