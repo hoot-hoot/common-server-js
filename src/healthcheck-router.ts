@@ -21,6 +21,7 @@ export function newHealthCheckRouter(): express.Router {
     healthCheckRouter.get('/check', (_req: Request, res: express.Response) => {
         res.status(HttpStatus.OK);
         res.type('.txt');
+        res.set('Connection', 'close');
         res.send('Everything looks A-OK');
         res.end();
     });
