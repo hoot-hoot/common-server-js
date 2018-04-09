@@ -3,6 +3,10 @@ export {
 } from './common-api-server-middleware'
 
 export {
+    newCommonFrontendServerMiddleware
+} from './common-frontend-server-middleware'
+
+export {
     newCommonServerMiddleware,
     newLocalCommonServerMiddleware
 } from './common-server-middleware'
