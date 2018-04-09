@@ -2,7 +2,6 @@
 
 /** Imports. Also so typedoc works correctly. */
 import * as express from 'express'
-import { Response } from 'express'
 
 import { Env, isOnServer } from '@truesparrow/common-js'
 
@@ -42,8 +41,8 @@ export function newCommonFrontendServerMiddleware(env: Env, exceptionPaths: stri
             return;
         }
 
-        sslifyMiddleware(req, res, (newReq: Request, newRes: Response) => {
-            hstsMiddleware(newReq, newRes, () => {
+        sslifyMiddleware(req, res, () => {
+            hstsMiddleware(req, res, () => {
                 next();
             });
         });
