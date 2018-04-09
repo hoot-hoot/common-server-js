@@ -3,8 +3,6 @@
 /** Imports. Also so typedoc works correctly. */
 import * as express from 'express'
 
-import { Env, isOnServer } from '@truesparrow/common-js'
-
 import { Request } from './request'
 import { Response } from 'express';
 
@@ -19,9 +17,11 @@ const newHstsMiddleware = require('hsts');
  * don't want people making them over HTTP to begin with and they can only occur after a GET anyway.
  * Also enables HSTS and will send that header for subdomains and 30 days.
  * @note Will only apply this in a "server" context - the staging and live environments.
+ * @param exceptionPaths - a set of paths to not use HTTPS on or enable HSTS. These are usually things
+ *     used internally, such as health checks or dev routes which are called over simple HTTP.
  * @returns an {@link express.RequestHandler} which does all of the above.
  */
-export function newCommonFrontendServerMiddleware(env: Env): express.RequestHandler {
+export function newCommonFrontendServerMiddleware(exceptionPaths: string[]): express.RequestHandler {
     const sslifyMiddleware = newSslifyMiddlware({ trustProtoHeader: true });
     const hstsMiddleware = newHstsMiddleware({
         maxAge: 43200,
@@ -30,14 +30,15 @@ export function newCommonFrontendServerMiddleware(env: Env): express.RequestHand
     });
 
     return (req: Request, res: express.Response, next: express.NextFunction) => {
-        if (isOnServer(env)) {
-            sslifyMiddleware(req, res, (newReq: Request, newRes: Response) => {
-                hstsMiddleware(newReq, newRes, () => {
-                    next();
-                });
-            });
-        } else {
+        if (exceptionPaths.indexOf(req.originalUrl) != -1) {
             next();
+            return;
         }
+
+        sslifyMiddleware(req, res, (newReq: Request, newRes: Response) => {
+            hstsMiddleware(newReq, newRes, () => {
+                next();
+            });
+        });
     };
 }
