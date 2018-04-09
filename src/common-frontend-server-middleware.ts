@@ -1,0 +1,43 @@
+/** Defines a factory for middleware which ensures the basic structure of any `truesparrow` frontend server. */
+
+/** Imports. Also so typedoc works correctly. */
+import * as express from 'express'
+
+import { Env, isOnServer } from '@truesparrow/common-js'
+
+import { Request } from './request'
+import { Response } from 'express';
+
+const newSslifyMiddlware = require('express-sslify');
+const newHstsMiddleware = require('hsts');
+
+
+/**
+ * Create an express middleware component which takes care of common structure for frontend servers.
+ * Does a redirect to HTTPS from HTTP if we're in a production setup with the X-Forwarded-Proto header.
+ * This only happens for safe requests - GET & HEAD. All of the others get 403ed by default, since we
+ * don't want people making them over HTTP to begin with and they can only occur after a GET anyway.
+ * Also enables HSTS and will send that header for subdomains and 30 days.
+ * @note Will only apply this in a "server" context - the staging and live environments.
+ * @returns an {@link express.RequestHandler} which does all of the above.
+ */
+export function newCommonFrontendServerMiddleware(env: Env): express.RequestHandler {
+    const sslifyMiddleware = newSslifyMiddlware({ trustProtoHeader: true });
+    const hstsMiddleware = newHstsMiddleware({
+        maxAge: 43200,
+        includeSubdomains: true,
+        preload: false
+    });
+
+    return (req: Request, res: express.Response, next: express.NextFunction) => {
+        if (isOnServer(env)) {
+            sslifyMiddleware(req, res, (newReq: Request, newRes: Response) => {
+                hstsMiddleware(newReq, newRes, () => {
+                    next();
+                });
+            });
+        } else {
+            next();
+        }
+    };
+}
