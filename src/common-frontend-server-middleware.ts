@@ -37,7 +37,7 @@ export function newCommonFrontendServerMiddleware(env: Env, exceptionPaths: stri
             return;
         }
 
-        if (isOnServer(env)) {
+        if (!isOnServer(env)) {
             next();
             return;
         }

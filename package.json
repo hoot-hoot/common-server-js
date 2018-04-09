@@ -1,6 +1,6 @@
 {
     "name": "@truesparrow/common-server-js",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "description": "Things shared between packages, for server-side work.",
     "author": "CHM SQRT2 Team",
     "scripts": {
