@@ -18,13 +18,12 @@ export interface Request extends express.Request {
     requestTime: Date;
     /**
      * An instance of a [bunyan]{@link https://github.com/trentm/node-bunyan} {@link Logger}. In
-     * a production context (either Staging or Prod), this is hooked up to the
-     * [Loggly]{@link https://www.loggly.com/} log collection service.
+     * a production context (either Staging or Live)
      */
     log: Logger;
     /**
      * An instance of a [Rollbar]{@link https://rollbar.com/} error collector. In a production
-     * context (either Staging or Prod), this is hooked up to the actual service.
+     * context (either Staging or Live), this is hooked up to the actual service.
      */
     errorLog: Rollbar;
 }

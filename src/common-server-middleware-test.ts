@@ -35,7 +35,7 @@ describe('LocalCommonServerMiddleware', () => {
 
 describe('CommonServerMiddleware', () => {
     it('should create a completed request object', (done) => {
-        const serverMiddleware = newCommonServerMiddleware('truesparrow', Env.Prod, 'BAD', 'BAD', 'BAD');
+        const serverMiddleware = newCommonServerMiddleware('truesparrow', Env.Live, 'BAD', 'BAD', 'BAD');
 
         const rightNow = new Date(Date.now());
 

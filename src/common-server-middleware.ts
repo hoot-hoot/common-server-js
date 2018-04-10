@@ -22,7 +22,7 @@ const LOGGLY_TIMEOUT_MS = 1000;
 
 /**
  * Create an express middleware component which takes care of the common structure of servers.
- * This is meant for local usage - that is Local or Dev, but not Staging or Prod.
+ * This is meant for local usage - that is Local or Dev, but not Staging or Live.
  * Should be the first middleware used in a middleware chain. It ensures that the later routers,
  * handlers and middleware receive a properly formatted {@link Request}. More precisely, it
  * populates the {@link Request.requestTime} field with the current time in UTC, configures
